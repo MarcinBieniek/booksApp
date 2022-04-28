@@ -1,7 +1,7 @@
 {
     'use strict'
-
-    // 1. References to elements and templates
+    // [Excercise 1]
+    // 1. Create references to elements and templates
 
     const select = {
         templateOf: {
@@ -22,6 +22,10 @@
         },
     }
 
+    const classNames = {
+        favourite: 'favorite',
+    }
+
     console.log(document.querySelector(select.templateOf.books))
 
     const templates = {
@@ -32,20 +36,16 @@
 
     const data = dataSource
 
-    console.log('dataSource: ', data)
-
-    // 3. Rendering product
+    // 3. Function rendering books
 
     function renderBooks(){
 
-    // 4. Loop - finding single books
+    // 4. Loop - finding single books data
 
         for(let bookData in data.books){
 
             const bookValueName = bookData;
             const bookObject = data.books[bookData];
-
-            console.log(bookValueName, bookObject)
 
             // 5. Generating HTML code based on template and single book data
 
@@ -56,56 +56,57 @@
             // 6. Creating DOM element
 
             const domElement = utils.createDOMFromHTML(generatedHTML);  
-            
-            console.log('domElement', domElement)
 
             // 7. Adding DOM element to list
 
             const bookListContainer = document.querySelector(select.containerOf.booksList);
             bookListContainer.appendChild(domElement);
 
-
         }
+    }
 
+    // [Excercise 2 - steps 8-14]
+    // [Excercise 3 - steps 15-]
+    // 8. Create empty array
 
+    const favoriteBooks = [];
 
+    // 9. Add initActions function
+    
+    function initActions(){
+
+        // 10. Prepare reference to all .book__image elements 
+
+        const images = document.querySelectorAll('.book__image');
+
+        console.log('images:', images)
+
+        // 11. Go through each element
+
+        for(const image of images){    
+
+            // 12. Add event listener with function (preventDefault, add class, get Id, add id to array)
+
+            image.addEventListener('dblclick', function(event){
+                event.preventDefault();
+                event.stopPropagation();
+                image.classList.add(classNames.favourite);
+
+                // 13. Get book identification from data-id attribute
+
+                const bookId = event.target.parentElement.parentElement.getAttribute('data-id');
+
+                // 14. Add bookId to array
+
+                favoriteBooks.push(bookId);
+
+                console.log(favoriteBooks)
+
+            });
+        }
     }
 
     renderBooks();
-
-    // 
-    
-    /*
-    function renderBooks(){
-        //const thisProduct = this;
-  
-        const dataBooks = dataSource.books;
-        const generatedHTML = templates.booksList(dataBooks);
-        const htmlElement = utils.createDOMFromHTML(generatedHTML);
-        const menuContainer = document.querySelector(select.containerOf.books);
-        menuContainer.appendChild(htmlElement);
-  
-        console.log(dataSource.books)
-
-      }
-
-    function getElements(){
-        
-
-    }
-
-    renderBooks()
-
-   
-    const templates = {
-        menuProduct: Handlebars.compile(document.querySelector(select.templateOf.menuProduct).innerHTML),
-
-
-    function getELements(){
-
-
-    }
-    */
-
+    initActions();
 
 }
