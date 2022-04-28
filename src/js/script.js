@@ -69,7 +69,7 @@
     // [Excercise 3 - steps 15-]
     // 8. Create empty array
 
-    const favoriteBooks = [];
+    let favoriteBooks = [];
 
     // 9. Add initActions function
     
@@ -89,19 +89,30 @@
 
             image.addEventListener('dblclick', function(event){
                 event.preventDefault();
-                event.stopPropagation();
-                image.classList.add(classNames.favourite);
 
-                // 13. Get book identification from data-id attribute
+                // 13. Get book id from data-id attribute
 
                 const bookId = event.target.parentElement.parentElement.getAttribute('data-id');
 
-                // 14. Add bookId to array
+                // 15. Check if book is in array
 
-                favoriteBooks.push(bookId);
+                if(!favoriteBooks.includes(bookId)){
+                    image.classList.add(classNames.favourite);
 
-                console.log(favoriteBooks)
+                    // 14. Add bookId to array
 
+                    favoriteBooks.push(bookId);
+                    console.log(favoriteBooks);
+
+                // 16. If it is in array remove class and remove from array
+
+                } else if(favoriteBooks.includes(bookId)) {
+                    image.classList.remove(classNames.favourite);
+                    
+                    favoriteBooks = favoriteBooks.filter(x => x !== bookId);   
+
+                }
+                
             });
         }
     }
@@ -110,3 +121,4 @@
     initActions();
 
 }
+
