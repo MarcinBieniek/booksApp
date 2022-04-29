@@ -1,7 +1,5 @@
 {
     'use strict'
-    // [Excercise 1]
-    // 1. Create references to elements and templates
 
     const select = {
         templateOf: {
@@ -23,98 +21,46 @@
     }
 
     const classNames = {
-        favourite: 'favorite',
+        favorite: 'favorite',
     }
-
-    console.log(document.querySelector(select.templateOf.books))
 
     const templates = {
         booksList: Handlebars.compile(document.querySelector(select.templateOf.books).innerHTML)
     };
-    
-    // 2. Acces to data file
 
-    const data = dataSource
-
-    // 3. Function rendering books
+    const data = dataSource;
+    let favoriteBooks = [];
 
     function renderBooks(){
 
-    // 4. Loop - finding single books data
-
         for(let bookData in data.books){
-
-            const bookValueName = bookData;
             const bookObject = data.books[bookData];
-
-            // 5. Generating HTML code based on template and single book data
-
             const generatedHTML = templates.booksList(bookObject);
-
-            console.log('generated HTML', generatedHTML)
-
-            // 6. Creating DOM element
-
             const domElement = utils.createDOMFromHTML(generatedHTML);  
-
-            // 7. Adding DOM element to list
-
             const bookListContainer = document.querySelector(select.containerOf.booksList);
             bookListContainer.appendChild(domElement);
-
         }
     }
-
-    // [Excercise 2 - steps 8-14]
-    // [Excercise 3 - steps 15-]
-    // 8. Create empty array
-
-    let favoriteBooks = [];
-
-    // 9. Add initActions function
     
     function initActions(){
 
-        // 10. Prepare reference to all .book__image elements 
+        const booksList = document.querySelector(select.containerOf.booksList)
 
-        const images = document.querySelectorAll('.book__image');
+        booksList.addEventListener('dblclick', function(event){
+            event.preventDefault();
 
-        console.log('images:', images)
+            const clickedElement = event.target.offsetParent;
+            const bookId = clickedElement.getAttribute('data-id');
 
-        // 11. Go through each element
+            if(!favoriteBooks.includes(bookId)){
+                clickedElement.classList.add(classNames.favorite);
+                favoriteBooks.push(bookId);
 
-        for(const image of images){    
-
-            // 12. Add event listener with function (preventDefault, add class, get Id, add id to array)
-
-            image.addEventListener('dblclick', function(event){
-                event.preventDefault();
-
-                // 13. Get book id from data-id attribute
-
-                const bookId = event.target.parentElement.parentElement.getAttribute('data-id');
-
-                // 15. Check if book is in array
-
-                if(!favoriteBooks.includes(bookId)){
-                    image.classList.add(classNames.favourite);
-
-                    // 14. Add bookId to array
-
-                    favoriteBooks.push(bookId);
-                    console.log(favoriteBooks);
-
-                // 16. If it is in array remove class and remove from array
-
-                } else if(favoriteBooks.includes(bookId)) {
-                    image.classList.remove(classNames.favourite);
-                    
-                    favoriteBooks = favoriteBooks.filter(x => x !== bookId);   
-
-                }
-                
-            });
-        }
+            } else if(favoriteBooks.includes(bookId)) {
+                clickedElement.classList.remove(classNames.favorite);                   
+                favoriteBooks = favoriteBooks.filter(x => x !== bookId);   
+            }                
+        });        
     }
 
     renderBooks();
