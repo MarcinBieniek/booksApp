@@ -30,6 +30,7 @@
 
     const data = dataSource;
     let favoriteBooks = [];
+    let filters = [];
 
     function renderBooks(){
 
@@ -60,7 +61,38 @@
                 clickedElement.classList.remove(classNames.favorite);                   
                 favoriteBooks = favoriteBooks.filter(x => x !== bookId);   
             }                
-        });        
+        }); 
+
+        const filtersForm = document.querySelector(select.containerOf.filter);
+
+        filtersForm.addEventListener('click', function(event){
+            const target = event.target;
+        
+            const formName = target.getAttribute('name');
+            const formType = target.getAttribute('type');
+            const formValue = target.getAttribute('value');
+
+            if(
+            formName == 'filter' 
+            || formType == 'checkbox'
+            )
+            
+            { 
+
+                const filterIndex = filters.indexOf(formValue);
+
+                if(target.checked){
+                    filters.push(formValue);
+                } else {
+                    filters.splice(filterIndex, 1);
+                }
+
+                console.log(filters)
+
+            };
+
+        });
+
     }
 
     renderBooks();
