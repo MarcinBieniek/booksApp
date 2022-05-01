@@ -22,6 +22,7 @@
 
     const classNames = {
         favorite: 'favorite',
+        hidden: 'hidden',
     }
 
     const templates = {
@@ -72,12 +73,7 @@
             const formType = target.getAttribute('type');
             const formValue = target.getAttribute('value');
 
-            if(
-            formName == 'filter' 
-            || formType == 'checkbox'
-            )
-            
-            { 
+            if(formName == 'filter' || formType == 'checkbox'){ 
 
                 const filterIndex = filters.indexOf(formValue);
 
@@ -87,11 +83,37 @@
                     filters.splice(filterIndex, 1);
                 }
 
-                console.log(filters)
+                filterBooks();
+
+                console.log('filters', filters)
 
             };
 
         });
+
+    function filterBooks(){
+
+        for(let book of data.books){
+            const filteredBook = document.querySelector('.book__image[data-id="' + book.id + '"]');
+            let shouldBeHidden = false;
+
+            for(let filter of filters){
+
+                if(!book.details[filter]){
+                shouldBeHidden = true;
+                break;
+                }
+            }
+
+                if(!shouldBeHidden){
+                    filteredBook.classList.remove(classNames.hidden);
+                } else {
+                    filteredBook.classList.add(classNames.hidden);
+                }
+            
+        }
+
+    }
 
     }
 
